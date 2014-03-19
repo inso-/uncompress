@@ -12,32 +12,32 @@ def find_extension(name):
 	out.close()
 	os.system("rm filetype")
 	print(filetype)
-	itrtype = { "7-zip archive data"	: "7z",
-				"lzip compressed data"	: "lzip",
-				"gzip compressed data"	: "gz",
-				"POSIX tar archive"		: "tar",
-				"Zip archive data"		: "zip",
-				"bzip2 compressed data" : "bz2",
-				"current ar archive" 	: "a",
-				"lzop compressed data" 	: "lzop",
-				"xz compressed data" 	: "xz"
-				}.iteritems()
+	itrtype = { 	"7-zip archive data"	: "7z",
+			"lzip compressed data"	: "lzip",
+			"gzip compressed data"	: "gz",
+			"POSIX tar archive"	: "tar",
+			"Zip archive data"	: "zip",
+			"bzip2 compressed data" : "bz2",
+			"current ar archive" 	: "a",
+			"lzop compressed data" 	: "lzop",
+			"xz compressed data" 	: "xz"
+			}.iteritems()
 	for output, ext in itrtype:
 		if output in filetype[0]:
 			return ext
 
 def uncompress(name, ext, output):
 	os.system("mkdir %s" % output)
-	cmdlist = { "7z" 	: ["7z e -o %s %s " % (output, name)],
-				"lzip" 	: ["lzip -d -o %s %s" % (output, name) , "mv %s.out %s" % (name, output)],
-				"gz" 	: ["gunzip -d %s ", "mv %s %s" % (name[:-(len(ext) + 1)], output)],
-				"tar"	: ["tar -xvf %s -C %s " % (name, output)],
-				"zip"	: ["unzip %s -d %s" % (name, output)],
-				"bz2"	: ["tar -xvjf %s -C %s " % (name, output)],
-				"a"		: ["ar p  %s > %s/result" % (name, output)],
-				"lzop" 	: ["lzop -d %s " % (name), "mv %s %s" % (name[:-(len(ext) + 1)], output)],
-				"xz" 	: ["xz -d %s" % name, "mv %s %s" % (name[:-(len(ext) + 1)], output)]
-				}.get(ext)
+	cmdlist = { 	"7z" 	: ["7z e -o %s %s " % (output, name)],
+			"lzip" 	: ["lzip -d -o %s %s" % (output, name) , "mv %s.out %s" % (name, output)],
+			"gz" 	: ["gunzip -d %s ", "mv %s %s" % (name[:-(len(ext) + 1)], output)],
+			"tar"	: ["tar -xvf %s -C %s " % (name, output)],
+			"zip"	: ["unzip %s -d %s" % (name, output)],
+			"bz2"	: ["tar -xvjf %s -C %s " % (name, output)],
+			"a"	: ["ar p  %s > %s/result" % (name, output)],
+			"lzop" 	: ["lzop -d %s " % (name), "mv %s %s" % (name[:-(len(ext) + 1)], output)],
+			"xz" 	: ["xz -d %s" % name, "mv %s %s" % (name[:-(len(ext) + 1)], output)]
+			}.get(ext)
 	for cmd in cmdlist:
 		os.system(cmd)
 	os.system("rm %s" % name)
